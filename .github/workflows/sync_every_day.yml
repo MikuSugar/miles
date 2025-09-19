@@ -1,4 +1,4 @@
-name: Sync running data from garmin
+name: Sync running data from running_page
 
 on:
   workflow_dispatch:
