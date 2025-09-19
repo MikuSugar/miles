@@ -8,8 +8,6 @@ on:
   
 
 env:
-  GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
-  GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
