@@ -5,10 +5,12 @@ on:
   schedule:
     # utc time
     - cron: '0 18 * * *'
-  
+
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  GITHUB_NAME: mikusugar
+  GITHUB_EMAIL: syfangjie@live.cn
 
 jobs:
   sync:
@@ -29,4 +31,14 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Sync running_page
         run: |
-          bash -c 'cd /home/user/bin/syncer && source /home/user/bin/syncer/venv/bin/activate && python running_page.py mikusugar/running_page'
+          python running_page.py mikusugar/running_page
+
+      - name: Generate new SVG file
+        run: |
+          python main.py push
+      - name: Commit and push updated SVG file
+        run: |
+          git config --local user.email "${{ env.GITHUB_EMAIL }}"
+          git config --local user.name "${{ env.GITHUB_NAME }}"
+          git commit -a -m 'sync running data by sync_running_page' || echo "nothing to commit"
+          git push || echo "nothing to push"

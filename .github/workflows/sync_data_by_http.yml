@@ -1,47 +1,47 @@
-name: Sync running data by http request
-
-on:
-  workflow_dispatch:
-    inputs:
-      dt:
-        description: 'datetime str with comma separated, format 2021-01-02 12:22:45,2021-01-02 12:32:45'
-        required: true
-      distance:
-        description: 'distance with comma separated, e.g. 5.12,3.23'
-        required: true
-      heart:
-        description: 'heart rate with comma separated, e.g. 140,150'
-        required: true
-      pace:
-        description: 'pace with comma separated, e.g. 6:20,5:13'
-        required: true
-
-env:
-  # change env here
-  GITHUB_NAME: mikusugar
-  GITHUB_EMAIL: syfangjie@live.cn
-
-jobs:
-  sync:
-    name: Build
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11.4
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Update running data and generate new SVG file
-        run: |
-          python main.py http $'${{ github.event.inputs.dt }}' $'${{ github.event.inputs.distance }}' $'${{ github.event.inputs.heart }}' $'${{ github.event.inputs.pace }}'
-      - name: Commit and push updated files
-        run: |
-          git config --local user.email "${{ env.GITHUB_EMAIL }}"
-          git config --local user.name "${{ env.GITHUB_NAME }}"
-          git commit -a -m 'sync running data by http' || echo "nothing to commit"
-          git push || echo "nothing to push"
+#name: Sync running data by http request
+#
+#on:
+#  workflow_dispatch:
+#    inputs:
+#      dt:
+#        description: 'datetime str with comma separated, format 2021-01-02 12:22:45,2021-01-02 12:32:45'
+#        required: true
+#      distance:
+#        description: 'distance with comma separated, e.g. 5.12,3.23'
+#        required: true
+#      heart:
+#        description: 'heart rate with comma separated, e.g. 140,150'
+#        required: true
+#      pace:
+#        description: 'pace with comma separated, e.g. 6:20,5:13'
+#        required: true
+#
+#env:
+#  # change env here
+#  GITHUB_NAME: mikusugar
+#  GITHUB_EMAIL: syfangjie@live.cn
+#
+#jobs:
+#  sync:
+#    name: Build
+#    runs-on: macos-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: 3.11.4
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+#      - name: Update running data and generate new SVG file
+#        run: |
+#          python main.py http $'${{ github.event.inputs.dt }}' $'${{ github.event.inputs.distance }}' $'${{ github.event.inputs.heart }}' $'${{ github.event.inputs.pace }}'
+#      - name: Commit and push updated files
+#        run: |
+#          git config --local user.email "${{ env.GITHUB_EMAIL }}"
+#          git config --local user.name "${{ env.GITHUB_NAME }}"
+#          git commit -a -m 'sync running data by http' || echo "nothing to commit"
+#          git push || echo "nothing to push"
